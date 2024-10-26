@@ -61,25 +61,27 @@ const config = defineConfig({
     { name: "setup", testMatch: /.*\.setup\.ts/ },
 
     // https://playwright.dev/docs/api/class-browser#browser-new-context
+
     {
-      name: 'Google Chrome',
+      name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'], channel: 'chrome',
-        // storageState: process.env.BDD_PL_STORAGE_STATE_FILEPATH ?? 'tests/state.json',
-        colorScheme: "dark",
+        ...devices['Desktop Chrome'],
         timezoneId: "Asia/Tokyo",
-        //geolocation: {latitude: longitude: accuracy: },
-        //permissions: ['geolocation'], // ジオロケーション(GPS)の権限を許可
+        // storageState: 'tests/state.json',
       },
+      //dependencies: ["setup"],
     },
 
     // {
-    //   name: 'chromium',
+    //   name: 'Google Chrome',
     //   use: {
-    //     ...devices['Desktop Chrome'],
-    //     storageState: 'tests/state.json',
+    //     ...devices['Desktop Chrome'], channel: 'chrome',
+    //     // storageState: process.env.BDD_PL_STORAGE_STATE_FILEPATH ?? 'tests/state.json',
+    //     colorScheme: "dark",
+    //     timezoneId: "Asia/Tokyo",
+    //     //geolocation: {latitude: longitude: accuracy: },
+    //     //permissions: ['geolocation'], // ジオロケーション(GPS)の権限を許可
     //   },
-    //   dependencies: ["setup"],
     // },
 
     // {
