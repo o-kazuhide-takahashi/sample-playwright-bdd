@@ -1,15 +1,19 @@
 {
-  "private": true,
+  "name": "sample-playwright-bdd",
+  "description": "Playwright BDD 導入検証用 (introduction)",
+  "license": "MIT",
+  "version": "0.1.0",
   "type": "module",
-  "scripts": {},
-  "devDependencies": {
+  "keywords": ["quality assurance", "software test", "e2e", "playwright", "bdd", "gherkin"],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/o-kazuhide-takahashi/sample-playwright-bdd.git"
+  },
+  "author": "Kazuhide takahashi <o.kazuhide.takahashi@gmail> (https://github.com/o-kazuhide-takahashi/)",
+  "dependencies": {
+    "typescript": "^5.6.3",
     "@playwright/test": "^1.48.0",
     "@types/node": "^22.7.5",
-    "playwright-bdd": "^7.5.0",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.6.3"
-  },
-  "dependencies": {
-    "multiple-cucumber-html-reporter": "^3.8.0"
+    "playwright-bdd": "^7.5.0"
   }
 }
