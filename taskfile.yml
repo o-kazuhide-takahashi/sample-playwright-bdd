@@ -1,0 +1,72 @@
+version: '3'
+
+vars:
+  DATE_YYYYMMDDHHMMSS: "$(date '+%Y%m%d%H%M%S')"
+
+  BDD_CONF_FEATURES_PATH: "bdd/features/*.feature"
+  BDD_CONF_STEPS_PATH: "bdd/steps/*.ts"
+  BDD_CONF_OUTPUT_PATH: "tests"
+  BDD_PL_CODEGEN_OUTPUT_PATH: "tests/bdd/sample/pl_codegen/"
+  BDD_PL_CODEGEN_OUTPUT_FILETYPE: "ts"
+  BDD_PL_CODEGEN_OUTPUT_DEFAULT_FILENAME: "{{.DATE_YYYYMMDDHHMMSS}}.{{.BDD_PL_CODEGEN_OUTPUT_FILETYPE}}"
+  BDD_PL_CODEGEN_OUTPUT_FILENAME: "{{.BDD_PL_CODEGEN_OUTPUT_DEFAULT_FILENAME}}"
+  BDD_PL_CODEGEN_OUTPUT_FILEPATH: "{{.BDD_PL_CODEGEN_OUTPUT_PATH}}{{.BDD_PL_CODEGEN_OUTPUT_FILENAME}}"
+
+  BDD_PL_OPTION_LOCALE: "ja-JP"
+  BDD_PL_OPTION_SCREENSHOT_ALWAYS: "true"
+  BDD_PL_OPTION_VIDEO_ALWAYS: "true"
+  BDD_PL_OPTION_TRACE_ALWAYS: "true"
+
+  PL_CODE_URL: "https://www.yahoo.co.jp/"
+
+tasks:
+  default:
+    desc: 'guide tasks'
+    cmds:
+      - task -l
+
+  bdd-report:
+    desc: "レポートサーバーを起動してレポートを表示する(バックグラウンド起動)"
+    cmds: ["bash -c 'nohup npx playwright show-report >/dev/null 2>&1 &'"]
+
+  bdd-report-stop:
+    desc: "レポートサーバーを停止する(バックグラウンド起動)"
+    cmds: ["kill -9 $(ps -aef | grep 'show-report' | grep 'node' | grep -v 'grep' | awk '{print $2}')"]
+
+  bdd:
+    desc: "Gherkin(*.feature)からテストコード生成しplaywrightでテストを実施してレポートを表示する"
+    cmds:
+      - "npx bddgen && npx playwright test {{.CLI_ARGS}}"
+      - "npx playwright show-report"
+  bdd-test:
+    desc: "成功時はレポートを表示しない Gherkin(*.feature)からテストコード生成しplaywrightでテストを実施(成功時はレポートを表示しない)"
+    cmds:
+      - "npx bddgen && npx playwright test {{.CLI_ARGS}}"
+  bdd-test-only:
+    desc: "テスト実施のみ playwrightでテストを実施(成功時はレポートを表示しない)"
+    cmds:
+      - "npx playwright test {{.CLI_ARGS}}"
+  bdd-only:
+    desc: "テストコード生成のみ Gherkin(*.feature)からテストコード生成のみ実施"
+    cmds:
+      - "npx bddgen {{.CLI_ARGS}}"
+  bdd-snap:
+    desc: "スナップショット更新 Gherkin(*.feature)からテストコード生成しplaywrightでテストを実施(画像比較用のスナップショットを更新する)"
+    cmds:
+      - "npx bddgen && npx playwright test --update-snapshots {{.CLI_ARGS}}"
+  bdd-steps:
+    desc: "stepsでサポート(実装)している記述の一覧を表示"
+    cmds:
+      - "npx bddgen export | grep \"*\" "
+  bdd-steps-verbose:
+    desc: "stepsでサポート(実装)している記述の一覧を表示(詳細表示)"
+    cmds:
+      - "BDD_VERBOSE=1 npx bddgen export"
+
+  # PL_CODE_URL に 開始時のURLを設定する
+  pl-code:
+    desc: "playwrightのコード生成機能を起動(ファイルは {{.BDD_PL_CODEGEN_OUTPUT_FILEPATH}} に保存)"
+    cmds:
+      - "npx playwright codegen {{.PL_CODE_URL}} -o {{.BDD_PL_CODEGEN_OUTPUT_FILEPATH}} --lang ja_JP"
+      #- "npx playwright codegen localhost:28080/home -o {{.BDD_PL_CODEGEN_OUTPUT_FILEPATH}} --lang ja_JP --load-storage $BDD_PL_STORAGE_STATE_FILEPATH"
+
