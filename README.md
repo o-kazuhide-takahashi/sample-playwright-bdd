@@ -30,7 +30,7 @@ PlaywrightとBDDの動作確認のためのサンプル
 clone files
 
 ```shell
-git clone <repository url https/ssh>
+git clone https://github.com/o-kazuhide-takahashi/sample-playwright-bdd.git
 ```
 
 npm install
